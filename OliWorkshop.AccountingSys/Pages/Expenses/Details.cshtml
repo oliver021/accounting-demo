@@ -1,0 +1,44 @@
+﻿@page
+@model OliWorkshop.AccountingSys.Pages.Expenses.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Expense</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Expense.Concept)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Expense.Concept)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Expense.Amount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Expense.Amount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Expense.ExpenseCategory)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Expense.ExpenseCategory.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Expense.AtCreated)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Expense.AtCreated)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Expense.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
