@@ -55,12 +55,12 @@ namespace OliWorkshop.AccountingSys.Pages.Expenses
                 result = result.Where(x => x.AtCreated > instanceAfter);
             }
 
-            if (amount_min != StringValues.Empty && int.TryParse(amount_min.ToString(), out int instanceMin))
+            if (amount_min != StringValues.Empty && decimal.TryParse(amount_min.ToString(), out decimal instanceMin))
             {
                 result = result.Where(x => x.Amount >= instanceMin);
             }
 
-            if (amount_max != StringValues.Empty && int.TryParse(amount_min.ToString(), out int instanceMax))
+            if (amount_max != StringValues.Empty && decimal.TryParse(amount_min.ToString(), out decimal instanceMax))
             {
                 result = result.Where(x => x.Amount <= instanceMax);
             }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using OliWorkshop.AccountingSys.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace OliWorkshop.AccountingSys.Data
 {
-    public class Expense
+    public class Expense : IAssetAnotation
     {
         public uint Id { get; set; }
 
         public string Concept { get; set; }
 
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
 
         public string UserId { get; set; }
 

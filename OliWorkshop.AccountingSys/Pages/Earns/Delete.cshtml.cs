@@ -11,9 +11,9 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
 {
     public class DeleteModel : PageModel
     {
-        private readonly OliWorkshop.AccountingSys.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DeleteModel(OliWorkshop.AccountingSys.Data.ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext context)
         {
             _context = context;
         }

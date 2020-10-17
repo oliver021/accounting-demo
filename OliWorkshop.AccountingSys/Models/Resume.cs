@@ -7,7 +7,7 @@ namespace OliWorkshop.AccountingSys.Models
 {
     public class Resume
     {
-        public long Total;
+        public decimal Total;
 
         public decimal AvarageTotal;
 

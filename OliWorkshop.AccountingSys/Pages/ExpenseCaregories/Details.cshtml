@@ -9,7 +9,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>ExpenseCategory</h4>
+    <h4 class="f-title">ExpenseCategory</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -30,6 +30,26 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ExpenseCategory.AtCreated)
         </dd>
+    </dl>
+    <hr />
+    <h4 class="f-title">Resume and avarage's metric</h4>
+    <hr />
+    <dl class="row resume-anotations">
+        <dt class="col-sm-2">
+            Total:  @Html.DisplayFor(model => model.Resume.Total)
+        </dt>
+        <dt class="col-sm-2">
+            Avarage: @Html.DisplayFor(model => model.Resume.AvarageTotal)
+        </dt>
+        <dt class="col-sm-2">
+            Avarage for Year: @Html.DisplayFor(model => model.Resume.AvaragePerYear)
+        </dt>
+        <dt class="col-sm-2">
+            Avarage for Month: @Html.DisplayFor(model => model.Resume.AvaragePerMonth)
+        </dt>
+        <dt class="col-sm-2">
+            Avarage for Day: @Html.DisplayFor(model => model.Resume.AvaragePerDay)
+        </dt>
     </dl>
 </div>
 <div>

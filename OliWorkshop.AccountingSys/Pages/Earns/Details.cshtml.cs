@@ -11,9 +11,9 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
 {
     public class DetailsModel : PageModel
     {
-        private readonly OliWorkshop.AccountingSys.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DetailsModel(OliWorkshop.AccountingSys.Data.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -53,12 +53,10 @@ namespace OliWorkshop.AccountingSys
             }
 
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-            app.EnsureUserIdPresent();
+            app.UseMultiCulture();
 
             app.UseEndpoints(endpoints =>
             {

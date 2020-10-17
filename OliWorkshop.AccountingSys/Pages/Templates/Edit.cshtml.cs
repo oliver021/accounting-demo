@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using OliWorkshop.AccountingSys.Data;
 
 namespace OliWorkshop.AccountingSys.Pages.Templates
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly OliWorkshop.AccountingSys.Data.ApplicationDbContext _context;

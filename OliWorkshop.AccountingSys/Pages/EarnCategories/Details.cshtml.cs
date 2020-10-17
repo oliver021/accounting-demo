@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OliWorkshop.AccountingSys.Data;
+using OliWorkshop.AccountingSys.Data.Models;
+using OliWorkshop.AccountingSys.Helpers;
 using OliWorkshop.AccountingSys.Models;
 
 namespace OliWorkshop.AccountingSys.Pages.EarnCategories
@@ -36,32 +38,19 @@ namespace OliWorkshop.AccountingSys.Pages.EarnCategories
                 .Include(e => e.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            var query = _context.Earn.Where(x => x.EarnCategoryId == EarnCategory.Id);
-
-
-            Resume.Total = await query.SumAsync(x => x.Amount);
-            Resume.AvarageTotal = await query.AverageAsync(x => (decimal) x.Amount);
-
-            Resume.AvaragePerYear = await query
-                .GroupBy(x => x.AtCreated.Year)
-                .Select(x => x.Sum(j => (decimal) j.Amount))
-                .AverageAsync();
-
-            Resume.AvaragePerMonth = await query
-               .GroupBy(x => x.AtCreated.Month)
-               .Select(x => x.Sum(j => (decimal) j.Amount))
-               .AverageAsync();
-
-            Resume.AvaragePerDay = await query
-               .GroupBy(x => x.AtCreated.Day)
-               .Select(x => x.Sum(j => (decimal)j.Amount))
-               .AverageAsync();
-
+            // 404
             if (EarnCategory == null)
             {
                 return NotFound();
             }
+
+            // resolve basic metrics like total and many types of avarage base on date
+            await DataHelpers.ResolveResume(query: _context.Earn.Where(x => x.EarnCategoryId == EarnCategory.Id),
+                                            resume: Resume);
+
             return Page();
         }
+
+        
     }
 }

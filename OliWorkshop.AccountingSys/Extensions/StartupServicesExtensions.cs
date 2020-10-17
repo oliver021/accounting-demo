@@ -1,8 +1,5 @@
 ﻿using OliWorkshop.AccountingSys.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +8,18 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class StartupServicesExtensions
     {
+        /// <summary>
+        /// Add Locations and I18n Services
+        /// </summary>
+        /// <param name="services"></param>
+        public static void AddI18nSupport(this IServiceCollection services)
+        {
+            services.AddLocalization(options =>
+            {
+                options.ResourcesPath = "Resources";
+            });
+        }
+
         /// <summary>
         /// Add identity system with necesary services
         /// </summary>
