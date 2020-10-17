@@ -34,6 +34,7 @@ namespace OliWorkshop.AccountingSys.Pages.Dashboard
 
             IQueryable<Earn> queryEarnsBase = _context.Earn
                 .Where(x => x.UserId == HttpContext.User.GetUserId());
+
             IQueryable<Expense> queryExpensesBase = _context.Expense
                 .Where(x => x.UserId == HttpContext.User.GetUserId());
 

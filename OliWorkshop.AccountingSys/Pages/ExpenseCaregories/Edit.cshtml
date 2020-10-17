@@ -20,7 +20,7 @@
                 <input asp-for="ExpenseCategory.Name" class="form-control" />
                 <span asp-validation-for="ExpenseCategory.Name" class="text-danger"></span>
             </div>
-            
+            <input asp-for="ExpenseCategory.UserId" class="form-control" value="@User.GetUserId()" type="hidden" />
             <div class="form-group">
                 <label asp-for="ExpenseCategory.AtCreated" class="control-label"></label>
                 <input asp-for="ExpenseCategory.AtCreated" class="form-control" />
