@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -59,12 +60,14 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
                 result = result.Where(x => x.Amount >= instanceMin);
             }
 
-            if (amount_max != StringValues.Empty && int.TryParse(amount_min.ToString(), out int instanceMax))
+            if (amount_max != StringValues.Empty && int.TryParse(amount_max.ToString(), out int instanceMax))
             {
                 result = result.Where(x => x.Amount <= instanceMax);
             }
 
-            return result.Include(e => e.EarnCategory);
+            return result
+                .Where(x => x.UserId == HttpContext.User.GetUserId())
+                .Include(e => e.EarnCategory);
         }
     }
 }

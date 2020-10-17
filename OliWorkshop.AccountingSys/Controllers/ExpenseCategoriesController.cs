@@ -22,9 +22,23 @@ namespace OliWorkshop.AccountingSys.Controllers
 
         // GET: api/ExpenseCategories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ExpenseCategory>>> GetExpenseCategory()
+        public async Task<ActionResult<IEnumerable<ExpenseCategory>>> GetExpenseCategory(int page = 0, int length = 45)
         {
-            return await _context.ExpenseCategory.ToListAsync();
+            if (page == 0)
+            {
+                // return all elements
+                return await _context.ExpenseCategory.ToListAsync();
+            }
+            else if (page > 0 && length > 0)
+            {
+                // return paginate list
+                return await _context.ExpenseCategory.Skip(length * (page - 1)).Take(length).ToListAsync();
+            }
+            else
+            {
+                // the request is invalid
+                return BadRequest();
+            }
         }
 
         // GET: api/ExpenseCategories/5

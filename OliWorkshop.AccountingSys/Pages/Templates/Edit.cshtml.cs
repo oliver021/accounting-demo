@@ -2,27 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OliWorkshop.AccountingSys.Data;
 
-namespace OliWorkshop.AccountingSys.Pages.EarnCategories
+namespace OliWorkshop.AccountingSys.Pages.Templates
 {
-    [Authorize]
     public class EditModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly OliWorkshop.AccountingSys.Data.ApplicationDbContext _context;
 
-        public EditModel(ApplicationDbContext context)
+        public EditModel(OliWorkshop.AccountingSys.Data.ApplicationDbContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public EarnCategory EarnCategory { get; set; }
+        public ConceptsTemplates ConceptsTemplates { get; set; }
 
         public async Task<IActionResult> OnGetAsync(uint? id)
         {
@@ -31,10 +29,10 @@ namespace OliWorkshop.AccountingSys.Pages.EarnCategories
                 return NotFound();
             }
 
-            EarnCategory = await _context.EarnCategory
-                .Include(e => e.User).FirstOrDefaultAsync(m => m.Id == id);
+            ConceptsTemplates = await _context.ConceptsTemplates
+                .Include(c => c.User).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (EarnCategory == null)
+            if (ConceptsTemplates == null)
             {
                 return NotFound();
             }
@@ -51,7 +49,7 @@ namespace OliWorkshop.AccountingSys.Pages.EarnCategories
                 return Page();
             }
 
-            _context.Attach(EarnCategory).State = EntityState.Modified;
+            _context.Attach(ConceptsTemplates).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +57,7 @@ namespace OliWorkshop.AccountingSys.Pages.EarnCategories
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EarnCategoryExists(EarnCategory.Id))
+                if (!ConceptsTemplatesExists(ConceptsTemplates.Id))
                 {
                     return NotFound();
                 }
@@ -72,9 +70,9 @@ namespace OliWorkshop.AccountingSys.Pages.EarnCategories
             return RedirectToPage("./Index");
         }
 
-        private bool EarnCategoryExists(uint id)
+        private bool ConceptsTemplatesExists(uint id)
         {
-            return _context.EarnCategory.Any(e => e.Id == id);
+            return _context.ConceptsTemplates.Any(e => e.Id == id);
         }
     }
 }

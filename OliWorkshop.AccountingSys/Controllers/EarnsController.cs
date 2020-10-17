@@ -20,14 +20,26 @@ namespace OliWorkshop.AccountingSys.Controllers
             _context = context;
         }
 
-        // GET: api/Earns
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Earn>>> GetEarn()
+        public async Task<ActionResult<IEnumerable<Earn>>> GetEarn(int page = 0, int length = 45)
         {
-            return await _context.Earn.ToListAsync();
+            if (page == 0)
+            {
+                // return all elements
+                return await _context.Earn.ToListAsync();
+            }
+            else if (page > 0 && length > 0)
+            {
+                // return paginate list
+                return await _context.Earn.Skip(length * (page - 1)).Take(length).ToListAsync();
+            }
+            else
+            {
+                // the request is invalid
+                return BadRequest();
+            }
         }
 
-        // GET: api/Earns/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Earn>> GetEarn(uint id)
         {

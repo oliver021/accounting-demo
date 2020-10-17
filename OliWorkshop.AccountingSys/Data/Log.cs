@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace OliWorkshop.AccountingSys.Data
 {
-    public class EarnCategory
+    public class Log
     {
         public uint Id { get; set; }
 
-        public string Name { get; set; }
+        public string Message { get; set; }
 
         public string UserId { get; set; }
 
         public IdentityUser User { get; set; }
 
-        public DateTime AtCreated { get; set; }
+        public DateTime Moment { get; set; } = DateTime.Now;
 
-        public List<Earn> Earns { get; set; }
+        public LogType Type { get; set; }
     }
 }

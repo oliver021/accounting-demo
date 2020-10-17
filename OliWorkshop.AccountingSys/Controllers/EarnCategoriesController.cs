@@ -22,9 +22,22 @@ namespace OliWorkshop.AccountingSys.Controllers
 
         // GET: api/EarnCategories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EarnCategory>>> GetEarnCategory()
+        public async Task<ActionResult<IEnumerable<EarnCategory>>> GetEarnCategory(int page = 0, int length = 45)
         {
-            return await _context.EarnCategory.ToListAsync();
+            if (page == 0)
+            {
+                // return all elements
+                return await _context.EarnCategory.ToListAsync();
+            }else if (page > 0 && length > 0)
+            {
+                // return paginate list
+                return await _context.EarnCategory.Skip(length*(page-1)).Take(length).ToListAsync();
+            }
+            else
+            {
+                // the request is invalid
+                return BadRequest();
+            }
         }
 
         // GET: api/EarnCategories/5

@@ -19,7 +19,7 @@ graphs and queries on averages, sums and other operations
 - AspNet Core 
 - EF Core
 - Mysql Db Provider
-- Sqlserver Db Provider (view appsetting.json)
+- Sqlserver Db Provider (see appsetting.json)
 - Razor Pages
 - Indentity
 - MVC and Api Rest Crud

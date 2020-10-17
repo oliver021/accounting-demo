@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using OliWorkshop.AccountingSys.Data;
-using System.Security.Claims;
 
-namespace OliWorkshop.AccountingSys.Pages.EarnCategories
+namespace OliWorkshop.AccountingSys.Pages.Templates
 {
-    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -21,11 +19,11 @@ namespace OliWorkshop.AccountingSys.Pages.EarnCategories
             _context = context;
         }
 
-        public IList<EarnCategory> EarnCategory { get;set; }
+        public IList<ConceptsTemplates> ConceptsTemplates { get;set; }
 
         public async Task OnGetAsync()
         {
-            EarnCategory = await _context.EarnCategory
+            ConceptsTemplates = await _context.ConceptsTemplates
                 .Where(x => x.UserId == HttpContext.User.GetUserId())
                 .ToListAsync();
         }

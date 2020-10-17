@@ -1,5 +1,5 @@
 ﻿@page
-@model OliWorkshop.AccountingSys.Pages.Earns.IndexModel
+@model OliWorkshop.AccountingSys.Pages.Templates.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -15,36 +15,34 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Earn[0].Concept)
+                @Html.DisplayNameFor(model => model.ConceptsTemplates[0].PresetName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Earn[0].Amount)
-            </th>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.Earn[0].EarnCategory)
+                @Html.DisplayNameFor(model => model.ConceptsTemplates[0].Concepts)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Earn[0].AtCreated)
+                @Html.DisplayNameFor(model => model.ConceptsTemplates[0].DefaultAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConceptsTemplates[0].Type)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Earn) {
+@foreach (var item in Model.ConceptsTemplates) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Concept)
+                @Html.DisplayFor(modelItem => item.PresetName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-           
-            <td>
-                @Html.DisplayFor(modelItem => item.EarnCategory.Name)
+                @Html.DisplayFor(modelItem => item.Concepts)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AtCreated)
+                @Html.DisplayFor(modelItem => item.DefaultAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

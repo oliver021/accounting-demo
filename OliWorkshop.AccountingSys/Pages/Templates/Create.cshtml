@@ -1,0 +1,52 @@
+﻿@page
+@model OliWorkshop.AccountingSys.Pages.Templates.CreateModel
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ConceptsTemplates</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ConceptsTemplates.PresetName" class="control-label"></label>
+                <input asp-for="ConceptsTemplates.PresetName" class="form-control" />
+                <span asp-validation-for="ConceptsTemplates.PresetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConceptsTemplates.Concepts" class="control-label"></label>
+                <input asp-for="ConceptsTemplates.Concepts" class="form-control" />
+                <span asp-validation-for="ConceptsTemplates.Concepts" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConceptsTemplates.DefaultAmount" class="control-label"></label>
+                <input asp-for="ConceptsTemplates.DefaultAmount" class="form-control" />
+                <span asp-validation-for="ConceptsTemplates.DefaultAmount" class="text-danger"></span>
+            </div>
+            <input asp-for="ConceptsTemplates.UserId" class="form-control" value="@User.GetUserId()" type="hidden" />
+            <div class="form-group">
+                <label asp-for="ConceptsTemplates.Type" class="control-label"></label>
+                <select asp-for="ConceptsTemplates.Type" class="form-control"></select>
+                <span asp-validation-for="ConceptsTemplates.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -15,7 +15,9 @@ namespace OliWorkshop.AccountingSys.Data
         }
         public DbSet<EarnCategory> EarnCategory { get; set; }
         public DbSet<Earn> Earn { get; set; }
-        public DbSet<OliWorkshop.AccountingSys.Data.ExpenseCategory> ExpenseCategory { get; set; }
-        public DbSet<OliWorkshop.AccountingSys.Data.Expense> Expense { get; set; }
+        public DbSet<ExpenseCategory> ExpenseCategory { get; set; }
+        public DbSet<Expense> Expense { get; set; }
+        public DbSet<ConceptsTemplates> ConceptsTemplates { get; set; }
+        public DbSet<Log> Logs { get; set; }
     }
 }
