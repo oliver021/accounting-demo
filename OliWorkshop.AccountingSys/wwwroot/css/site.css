@@ -130,7 +130,8 @@ li.menu-header  {
 .col-main {
     left: 40px;
     box-shadow: 0 0px 10px #f1f1f2;
-    background: #fff
+    background: #fff;
+    padding: 10px;
 }
 
 .main-row {

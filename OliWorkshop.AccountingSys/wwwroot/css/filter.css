@@ -1,0 +1,11 @@
+﻿.form-inline{
+    margin-bottom: 12px;
+}
+
+.form-group{
+    margin-right: 14px;
+}
+
+.form-group.num  > input {
+    width: 85px !important;
+}

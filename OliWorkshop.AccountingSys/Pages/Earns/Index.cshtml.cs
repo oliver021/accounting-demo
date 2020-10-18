@@ -5,9 +5,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using OliWorkshop.AccountingSys.Data;
+using OliWorkshop.AccountingSys.Models;
 
 namespace OliWorkshop.AccountingSys.Pages.Earns
 {
@@ -20,10 +22,16 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
             _context = context;
         }
 
+        [BindProperty]
+        public FilterOptions FilterOptions { get; set; }
+
         public IList<Earn> Earn { get;set; }
 
         public async Task OnGetAsync()
         {
+            ViewData["EarnCategoryId"] = new SelectList(
+            _context.EarnCategory
+            .Where(x => x.UserId == HttpContext.User.GetUserId()), "Id", "Name");
             Earn = await ResolveQuery().ToListAsync();
         }
 
@@ -34,11 +42,17 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
         private IQueryable<Earn> ResolveQuery()
         {
             var category = HttpContext.Request.Query["category"];
+            var term = HttpContext.Request.Query["term"];
             var before = HttpContext.Request.Query["before"];
             var after = HttpContext.Request.Query["after"];
             var amount_min = HttpContext.Request.Query["amount_min"];
             var amount_max = HttpContext.Request.Query["amount_max"];
             IQueryable<Earn> result = _context.Earn;
+
+            if (term != StringValues.Empty)
+            {
+                result = result.Where(x => x.Concept.Contains(term.ToString()));
+            }
 
             if (category != StringValues.Empty && uint.TryParse(category.ToString(), out uint value))
             {
@@ -67,6 +81,7 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
 
             return result
                 .Where(x => x.UserId == HttpContext.User.GetUserId())
+                .OrderByDescending(x => x.AtCreated)
                 .Include(e => e.EarnCategory);
         }
     }

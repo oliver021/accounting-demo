@@ -15,7 +15,7 @@ namespace OliWorkshop.AccountingSys.Pages.Expenses
     {
         private readonly ApplicationDbContext _context;
 
-        public IndexModel(OliWorkshop.AccountingSys.Data.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -67,6 +67,7 @@ namespace OliWorkshop.AccountingSys.Pages.Expenses
 
             return result
                 .Where(x => x.UserId == HttpContext.User.GetUserId())
+                .OrderByDescending(x => x.AtCreated)
                 .Include(e => e.ExpenseCategory);
         }
     }

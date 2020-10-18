@@ -6,11 +6,44 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Incomes</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<div class="row">
+    <div class="col-2">
+        <p>
+            <a class="btn btn-outline-info" asp-page="Create">Create New</a>
+        </p>
+    </div>
+    <div class="col-2">
+        <p>
+            <button class="btn btn-outline-info" id="filter_on">Filter Mode</button>
+        </p>
+    </div>
+    <div style="display:none" class="col-2">
+        <p>
+            <button class="btn btn-outline-success" id="filter_on">More Options</button>
+        </p>
+    </div>
+    <div id="filter-panel" style="display:none" class="col-12">
+        <form class="form-inline">
+            <div class="form-group">
+                <input name="term" class="form-control" placeholder="term" />
+            </div>
+            <div class="form-group">
+                <select name="category" class="form-control" asp-items="ViewBag.EarnCategoryId"></select>
+            </div>
+            <div class="form-group num">
+                <input name="amount_min" class="form-control" placeholder="min" />
+            </div>
+            <div class="form-group num">
+                <input name="amount_max" class="form-control" placeholder="max" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success" type="submit" id="filter_on">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +53,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Earn[0].Amount)
             </th>
-           
+
             <th>
                 @Html.DisplayNameFor(model => model.Earn[0].EarnCategory)
             </th>
@@ -31,27 +64,41 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Earn) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Concept)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-           
-            <td>
-                @Html.DisplayFor(modelItem => item.EarnCategory.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AtCreated)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Earn)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Concept)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.EarnCategory.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AtCreated)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+
+    <!-- Filter record script  -->
+    <script src="~/js/filter-record.js"></script>
+}
+
+
+@section Styles {
+
+    <!-- Filter record script  -->
+    <link rel="stylesheet" href="~/css/filter.css" />
+}
