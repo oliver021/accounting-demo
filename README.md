@@ -23,4 +23,5 @@ graphs and queries on averages, sums and other operations
 - Razor Pages
 - Indentity
 - MVC and Api Rest Crud
-- Javascript with many libraries
+- Javascript with many libraries (jQuery, ChartJs)
+- Bootstrap

@@ -9,3 +9,7 @@
 .form-group.num  > input {
     width: 85px !important;
 }
+
+    .form-group.short > input {
+        width: 168px !important;
+    }

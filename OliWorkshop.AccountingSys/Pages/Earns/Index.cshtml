@@ -1,6 +1,6 @@
 ﻿@page
 @model OliWorkshop.AccountingSys.Pages.Earns.IndexModel
-
+@using Humanizer 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -14,10 +14,10 @@
             <a class="btn btn-outline-info" asp-page="Create">Create New</a>
         </p>
     </div>
-    <div class="col-2">
-        <p>
-            <button class="btn btn-outline-info" id="filter_on">Filter Mode</button>
-        </p>
+    <div class="col-6">
+        <button class=" btn btn-outline-info" id="filter_on">Filter Mode</button>
+        <button class="btn btn-outline-danger" style="display:none" id="filter_undo">Cancel</button>
+        <button class="btn btn-outline-info" style="display:none" id="filter_advance">More Options</button>
     </div>
     <div style="display:none" class="col-2">
         <p>
@@ -25,12 +25,12 @@
         </p>
     </div>
     <div id="filter-panel" style="display:none" class="col-12">
-        <form class="form-inline">
+        <form id="filter-form" class="form-inline">
             <div class="form-group">
                 <input name="term" class="form-control" placeholder="term" />
             </div>
             <div class="form-group">
-                <select name="category" class="form-control" asp-items="ViewBag.EarnCategoryId"></select>
+                <select name="category" class="form-control" asp-items="Model.SelectCategories"></select>
             </div>
             <div class="form-group num">
                 <input name="amount_min" class="form-control" placeholder="min" />
@@ -43,54 +43,129 @@
             </div>
         </form>
     </div>
+    <div id="extra-panel" style="display:none" class="col-12">
+        <form class="form-inline">
+            <div class="form-group short">
+                <label class="control-label" for="d-after">After of: </label>
+                <input form="filter-form" class="form-control" type="date" name="after" id="d-after" value="" />
+            </div>
+
+            <div class="form-group short">
+                <label class="control-label" for="d-before">Before of: </label>
+                <input form="filter-form" class="form-control" type="date" name="before" id="d-before" value="" />
+            </div>
+            <div class="form-group short">
+                <label class="control-label" for="d-before">Group: </label>
+                <select form="filter-form" name="grouping" class="form-control">
+                    <optgroup label="For Date">
+                        <option value="none">No Group</option>
+                        <option value="day">Day</option>
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                    </optgroup>
+                    <optgroup label="Other">
+                        <option value="category">Category</option>
+                        <option value="concepts">Concepts</option>
+                    </optgroup>
+                </select>
+            </div>
+        </form>
+    </div>
 </div>
+@if(Model.GroupRecords == string.Empty){
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Earn[0].Concept)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Earn[0].Amount)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Earn[0].EarnCategory)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Earn[0].AtCreated)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Earn)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Concept)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EarnCategory.Name)
+                    </td>
+                    <td  class="specific-date" data-toggle="tooltip" title="@item.TextDate">
+                        @Html.DisplayFor(modelItem => item.TextDateAgo)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @*@Html.RenderPartial("~/Shared/_Paginate", Model.Paginate)*@
+}else{
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Earn[0].Concept)
+                @Model.GroupRecords
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Earn[0].Amount)
+                Amount
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Earn[0].EarnCategory)
+               Count
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Earn[0].AtCreated)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Earn)
+        @foreach (var item in Model.RecordGroupDate)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Concept)
+                    @Html.DisplayFor(modelItem => item.Key)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Amount)
                 </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.EarnCategory.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AtCreated)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    @Html.DisplayFor(modelItem => item.Count)
                 </td>
             </tr>
         }
     </tbody>
 </table>
+}
 
 @section Scripts {
+    
+    <!-- Drop Language String values to pass Javascript runtime -->
+    <script type="text/javascript">
+        var pageStrings = {
+            more: "More Options",
+            less: "Less Options",
+        };
+    </script>
 
     <!-- Filter record script  -->
     <script src="~/js/filter-record.js"></script>

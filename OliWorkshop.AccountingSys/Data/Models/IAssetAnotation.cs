@@ -19,5 +19,9 @@ namespace OliWorkshop.AccountingSys.Data.Models
         string UserId { get; set; }
 
         DateTime AtCreated { get; set; }
+
+        public string TextDate { get; set; }
+
+        public string TextDateAgo { get; set; }
     }
 }

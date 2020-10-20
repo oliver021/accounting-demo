@@ -2,6 +2,7 @@
 using OliWorkshop.AccountingSys.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,5 +25,11 @@ namespace OliWorkshop.AccountingSys.Data
         public ExpenseCategory ExpenseCategory { get; set; }
 
         public DateTime AtCreated { get; set; }
+
+        [NotMapped]
+        public string TextDate { get; set; }
+
+        [NotMapped]
+        public string TextDateAgo { get; set; }
     }
 }

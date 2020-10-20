@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
+using System.Globalization;
 
 namespace OliWorkshop.AccountingSys.Helpers
 {
@@ -33,6 +35,21 @@ namespace OliWorkshop.AccountingSys.Helpers
                .GroupBy(x => x.AtCreated.Day)
                .Select(x => x.Sum(j => j.Amount))
                .AverageAsync();
+        }
+
+        /// <summary>
+        /// Prepare an record to humanize yours properties with texts
+        /// </summary>
+        /// <param name="asset"></param>
+        public static void Humanize(IAssetAnotation asset, CultureInfo culture = null)
+        {
+            if (asset is null)
+            {
+                throw new ArgumentNullException(nameof(asset));
+            }
+
+            asset.TextDate = asset.AtCreated.ToOrdinalWords();
+            asset.TextDateAgo = asset.AtCreated.Humanize(true, DateTime.Now, culture);
         }
     }
 }

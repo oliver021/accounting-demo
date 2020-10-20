@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using OliWorkshop.AccountingSys.Data.Models;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OliWorkshop.AccountingSys.Data
 {
@@ -21,5 +22,11 @@ namespace OliWorkshop.AccountingSys.Data
         public EarnCategory EarnCategory { get; set; }
 
         public DateTime AtCreated { get; set; }
+
+        [NotMapped]
+        public string TextDate { get; set; } 
+
+        [NotMapped]
+        public string TextDateAgo { get; set; }
     }
 }

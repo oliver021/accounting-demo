@@ -1,13 +1,28 @@
 ﻿$(document).ready(function () {
-    var toggle = true;
     var panel = $("#filter-panel");
     var filter = $("#filter_on");
+    var undo = $("#filter_undo");
+    var more = $("#filter_advance");
+    var extra = $("#extra-panel");
+
     filter.click(function () {
-        if (toggle) {
             panel.show();
-        } else {
-            panel.hide();
-        }
-        toggle = !toggle;
-     });
+            undo.show();
+            more.show();
+            filter.hide();
+    });
+
+    undo.click(function () {
+        extra.hide();
+        panel.hide();
+        undo.hide();
+        filter.show();
+        more.hide();
+    });
+
+    more.click(function () {
+        extra.show();
+    });
+
 });
+

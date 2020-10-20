@@ -19,6 +19,10 @@ function chartMetrics(element, labels, datasets) {
     });
 }
 
+/**
+ * @function MakeSets
+ * @param {Array} datasets 
+ */
 function MakeSets(datasets) {
     return datasets.map(function (current) {
         if (current.border === undefined || typeof current.border !== 'number') {

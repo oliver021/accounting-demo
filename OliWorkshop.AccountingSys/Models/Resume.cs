@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace OliWorkshop.AccountingSys.Models
 {
+    /// <summary>
+    /// The basic resume of incomes and expenses
+    /// </summary>
     public class Resume
     {
         public decimal Total;

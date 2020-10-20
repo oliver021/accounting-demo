@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Localization;
+using OliWorkshop.AccountingSys.Components;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,19 +14,19 @@ namespace Microsoft.AspNetCore.Builder
         {
             var supportedCultures = new List<CultureInfo>
             {
-                new CultureInfo("es-US"),
-                new CultureInfo("en-US")
+                new CultureInfo("es"),
+                new CultureInfo("en")
             };
 
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                //En este caso la cultura por defecto será es-ES
                 DefaultRequestCulture = new RequestCulture(supportedCultures.First()),
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures,
 
                 // add from std header browser
                 RequestCultureProviders = new List<IRequestCultureProvider> { 
+                    new UserPreferenceCultureProvider(),
                     new AcceptLanguageHeaderRequestCultureProvider()
                 }
             });
