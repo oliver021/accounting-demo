@@ -54,16 +54,26 @@ namespace OliWorkshop.AccountingSys.Areas.Identity.Pages.Account
                 // get the culture provide by request
                 var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
                 var culture = requestCulture.RequestCulture.UICulture;
-                
+
+                // check the password confirmation
+                if (!Registration.Password.Equals(Registration.ConfirmPassword))
+                {
+                    Errors = new List<string>() { "The password confirmation is not match" };
+                    return Page();
+                }
+
                 // create a new user for registration
                 var newUser = new User
                 {
+                    Id = Guid.NewGuid().ToString(),
                     UserName = Registration.Email,
                     Email = Registration.Email,
                     Fullname = Registration.Fullname,
                     Locale = culture.Name
                 };
-                var resultRegistration = await UserManager.CreateAsync(newUser);
+
+                // request to db for a new user
+                var resultRegistration = await UserManager.CreateAsync(newUser, Registration.Password);
 
                 // check if the registration has been Succeeded
                 if (!resultRegistration.Succeeded)

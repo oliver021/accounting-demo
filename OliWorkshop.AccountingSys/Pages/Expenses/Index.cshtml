@@ -7,10 +7,14 @@
 }
 
 <h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<div class="row">
+    <div class="col-2">
+        <p>
+            <a class="btn btn-outline-info" asp-page="Create">Create New</a>
+        </p>
+    </div>
+    <partial name="_FilterData" model="Model" />
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -30,7 +34,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Expense) {
+        @foreach (var item in Model.Expense)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Concept)
@@ -41,8 +46,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ExpenseCategory.Name)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AtCreated)
+            <td class="specific-date" data-toggle="tooltip" title="@item.TextDate">
+                @Html.DisplayFor(modelItem => item.TextDateAgo)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
@@ -50,6 +55,27 @@
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
+
+@section Scripts {
+
+    <!-- Drop Language String values to pass Javascript runtime -->
+    <script type="text/javascript">
+        var pageStrings = {
+            more: "More Options",
+            less: "Less Options",
+        };
+    </script>
+
+    <!-- Filter record script  -->
+    <script src="~/js/filter-record.js"></script>
+}
+
+
+@section Styles {
+
+    <!-- Filter record script  -->
+    <link rel="stylesheet" href="~/css/filter.css" />
+}

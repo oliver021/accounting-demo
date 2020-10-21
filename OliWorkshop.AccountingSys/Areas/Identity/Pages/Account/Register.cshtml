@@ -1,4 +1,91 @@
 ﻿@page
 @model OliWorkshop.AccountingSys.Areas.Identity.Pages.Account.RegisterModel
 @{
+    ViewData["Title"] = "Welcome -  Create Account";
 }
+
+<div class="row">
+    <div class="login-card col-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Welcome - Create Account</h3>
+            </div>
+            <div class="card-body">
+                @if (Model.Errors != null)
+                {
+                    @foreach (var err in Model.Errors)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @err
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                }
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Registration.Fullname" class="control-label"></label>
+                        <input asp-for="Registration.Fullname" class="form-control" />
+                        <span asp-validation-for="Registration.Fullname" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Registration.Email" class="control-label"></label>
+                        <input asp-for="Registration.Email" class="form-control" />
+                        <span asp-validation-for="Registration.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Registration.Password" class="control-label"></label>
+                        <input asp-for="Registration.Password" class="form-control" />
+                        <span asp-validation-for="Registration.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Registration.ConfirmPassword" class="control-label"></label>
+                        <input asp-for="Registration.ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="Registration.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group check">
+                        <input id="start-session-check" asp-for="Registration.StartSessionNow" class="form-check-input" />
+                        <label asp-for="Registration.StartSessionNow" class="form-check-label"></label>
+                    </div>
+                    <div style="display:none" class="form-group check">
+                        <input asp-for="Registration.RemberMe" class="form-check-input" />
+                        <label asp-for="Registration.RemberMe" class="form-check-label"></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Authententicate" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-right-side col-6 text-center">
+        <h1>Accounting System</h1>
+        <h4>
+            The system where you can register incomes
+            and expenses that to know earns
+        </h4>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var check = $("#start-session-check");
+            check.change(function (e) {
+                console.log(e);
+                });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+@section Styles {
+    <!-- login styles -->
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+

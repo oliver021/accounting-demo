@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Humanizer;
 using System.Globalization;
+using OliWorkshop.AccountingSys.Data;
+using Microsoft.Extensions.Primitives;
 
 namespace OliWorkshop.AccountingSys.Helpers
 {
@@ -50,6 +52,46 @@ namespace OliWorkshop.AccountingSys.Helpers
 
             asset.TextDate = asset.AtCreated.ToOrdinalWords();
             asset.TextDateAgo = asset.AtCreated.Humanize(true, DateTime.Now, culture);
+        }
+
+        /// <summary>
+        /// Make an evaluation that filter assets
+        /// </summary>
+        /// <param name="before"></param>
+        /// <param name="after"></param>
+        /// <param name="amount_min"></param>
+        /// <param name="amount_max"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static IQueryable<IAssetAnotation> FilterAssets(string term, StringValues before, StringValues after, StringValues amount_min, StringValues amount_max, IQueryable<IAssetAnotation> result)
+        {
+
+            if (term != StringValues.Empty)
+            {
+                result = result.Where(x => x.Concept.Contains(term.ToString()));
+            }
+
+            if (before != StringValues.Empty && DateTime.TryParse(before, out DateTime instanceBefore))
+            {
+                result = result.Where(x => x.AtCreated < instanceBefore);
+            }
+
+            if (before != StringValues.Empty && DateTime.TryParse(after, out DateTime instanceAfter))
+            {
+                result = result.Where(x => x.AtCreated > instanceAfter);
+            }
+
+            if (amount_min != StringValues.Empty && int.TryParse(amount_min.ToString(), out int instanceMin))
+            {
+                result = result.Where(x => x.Amount >= instanceMin);
+            }
+
+            if (amount_max != StringValues.Empty && int.TryParse(amount_max.ToString(), out int instanceMax))
+            {
+                result = result.Where(x => x.Amount <= instanceMax);
+            }
+
+            return result;
         }
     }
 }

@@ -1,5 +1,68 @@
 ﻿@page
 @model OliWorkshop.AccountingSys.Areas.Identity.Pages.Account.LoginModel
 @{
-    ViewData["Title"] = "Login Page";
+    ViewData["Title"] = "Welcome - Login";
 }
+
+<div class="row">
+    <div class="login-card col-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Welcome - Start Session</h3>
+            </div>
+            <div class="card-body">
+                @if (Model.LoginsErrors != null)
+                {
+                    @foreach (var err in Model.LoginsErrors)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @err
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                }
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Login.Email" class="control-label"></label>
+                        <input asp-for="Login.Email" class="form-control" />
+                        <span asp-validation-for="Login.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Login.Password" class="control-label"></label>
+                        <input asp-for="Login.Password" class="form-control" />
+                        <span asp-validation-for="Login.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group check">
+                        <input asp-for="Login.RemberMe" class="form-check-input" />
+                        <label asp-for="Login.RemberMe" class="form-check-label"></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Authententicate" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-right-side col-6 text-center">
+        <h1>Accounting System</h1>
+        <h4>
+            The system where you can register incomes
+            and expenses that to know earns
+        </h4>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+@section Styles {
+     <!-- login styles -->
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+

@@ -26,17 +26,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services"></param>
         public static void AddIdentitySystem(this IServiceCollection services)
         {
-            services.AddDefaultIdentity<User>(options =>
+            services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 4;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
+                options.User.RequireUniqueEmail = true;
 
                 options.SignIn.RequireConfirmedEmail = false;
 
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            }).AddDefaultTokenProviders()
+              .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<SignInManager<User>>();
             services.AddScoped<UserManager<User>>();

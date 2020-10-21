@@ -12,9 +12,9 @@ namespace OliWorkshop.AccountingSys.Data.Models
     {
         uint Id { get; set; }
 
+        public string Concept { get; set; }
 
         decimal Amount { get; set; }
-
 
         string UserId { get; set; }
 

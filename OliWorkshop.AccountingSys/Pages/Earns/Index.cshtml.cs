@@ -29,6 +29,10 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
 
         public Pagination Paginate { get; set; }
 
+        /// <summary>
+        /// Resolve data when the get is requested
+        /// </summary>
+        /// <returns></returns>
         public async Task OnGetAsync()
         {
             var noneCategory = new SelectListItem("Ninguna", "none");
@@ -51,107 +55,136 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
             var query = ResolveQuery();
 
             var groupType = HttpContext.Request.Query["grouping"];
+            await GroupingIfIsRequested(query, groupType);
+        }
 
+        /// <summary>
+        /// If the group is requested
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="groupType"></param>
+        /// <returns></returns>
+        private async Task GroupingIfIsRequested(IQueryable<Earn> query, StringValues groupType)
+        {
             if (groupType != StringValues.Empty && groupType != "none")
             {
-                switch (groupType)
-                {
-
-                    case "day":
-                            GroupRecords = "Day";
-                            var result = await query
-                            .GroupBy(x => x.AtCreated.Day)
-                            .Select(x => new {
-                                x.Key,
-                                Amount = x.Sum(j => j.Amount),
-                                Count = x.Count()
-                            })
-                            .ToListAsync();
-                        RecordGroupDate = result.Select(x => new RecordGroupDate {
-                            Key = x.Key.ToString(),
-                            Amount = x.Amount,
-                            Count = x.Count
-                        }).ToList();
-                        break;
-
-                    case "months":
-                        GroupRecords = "Month";
-                        var result2 = await query
-                        .GroupBy(x => x.AtCreated.Month)
-                        .Select(x => new {
-                            x.Key,
-                            Amount = x.Sum(j => j.Amount),
-                            Count = x.Count()
-                        })
-                        .ToListAsync();
-                        RecordGroupDate = result2.Select(x => new RecordGroupDate
-                        {
-                            Key = x.Key.ToString(),
-                            Amount = x.Amount,
-                            Count = x.Count
-                        }).ToList();
-                        break;
-
-                    case "year":
-                        GroupRecords = "Year";
-                        var result3 = await query
-                        .GroupBy(x => x.AtCreated.Year)
-                        .Select(x => new {
-                            x.Key,
-                            Amount = x.Sum(j => j.Amount),
-                            Count = x.Count()
-                        })
-                        .ToListAsync();
-                        RecordGroupDate = result3.Select(x => new RecordGroupDate
-                        {
-                            Key = x.Key.ToString(),
-                            Amount = x.Amount,
-                            Count = x.Count
-                        }).ToList();
-                        break;
-
-                    case "category":
-                        GroupRecords = "Category";
-                        var result4 = await query
-                        .GroupBy(x => x.EarnCategoryId)
-                        .Select(x => new {
-                            x.Key,
-                            Amount = x.Sum(j => j.Amount),
-                            Count = x.Count()
-                        })
-                        .ToListAsync();
-                        RecordGroupDate = result4.Select(x => new RecordGroupDate
-                        {
-                            Key = SelectCategories.First(j => j.Value == x.Key.ToString()).Text,
-                            Amount = x.Amount,
-                            Count = x.Count
-                        }).ToList();
-                        break;
-
-                    case "concepts":
-                        GroupRecords = "Concepts";
-                        var result5 = await query
-                        .GroupBy(x => x.Concept)
-                        .Select(x => new {
-                            x.Key,
-                            Amount = x.Sum(j => j.Amount),
-                            Count = x.Count()
-                        })
-                        .ToListAsync();
-                        RecordGroupDate = result5.Select(x => new RecordGroupDate
-                        {
-                            Key = x.Key.ToString(),
-                            Amount = x.Amount,
-                            Count = x.Count
-                        }).ToList();
-                        break;
-
-                    default:
-                        throw new InvalidOperationException();
-                }
-            }else{
+                await ResolveGroup(query, groupType);
+            }
+            else
+            {
                 Earn = await query.ToListAsync();
                 Earn.ForEach(income => DataHelpers.Humanize(income));
+            }
+        }
+
+        /// <summary>
+        /// The group resolver
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="groupType"></param>
+        /// <returns></returns>
+        private async Task ResolveGroup(IQueryable<Earn> query, StringValues groupType)
+        {
+            switch (groupType)
+            {
+
+                case "day":
+                    GroupRecords = "Day";
+                    var result = await query
+                    .GroupBy(x => x.AtCreated.Day)
+                    .Select(x => new
+                    {
+                        x.Key,
+                        Amount = x.Sum(j => j.Amount),
+                        Count = x.Count()
+                    })
+                    .ToListAsync();
+                    RecordGroupDate = result.Select(x => new RecordGroupDate
+                    {
+                        Key = x.Key.ToString(),
+                        Amount = x.Amount,
+                        Count = x.Count
+                    }).ToList();
+                    break;
+
+                case "months":
+                    GroupRecords = "Month";
+                    var result2 = await query
+                    .GroupBy(x => x.AtCreated.Month)
+                    .Select(x => new
+                    {
+                        x.Key,
+                        Amount = x.Sum(j => j.Amount),
+                        Count = x.Count()
+                    })
+                    .ToListAsync();
+                    RecordGroupDate = result2.Select(x => new RecordGroupDate
+                    {
+                        Key = x.Key.ToString(),
+                        Amount = x.Amount,
+                        Count = x.Count
+                    }).ToList();
+                    break;
+
+                case "year":
+                    GroupRecords = "Year";
+                    var result3 = await query
+                    .GroupBy(x => x.AtCreated.Year)
+                    .Select(x => new
+                    {
+                        x.Key,
+                        Amount = x.Sum(j => j.Amount),
+                        Count = x.Count()
+                    })
+                    .ToListAsync();
+                    RecordGroupDate = result3.Select(x => new RecordGroupDate
+                    {
+                        Key = x.Key.ToString(),
+                        Amount = x.Amount,
+                        Count = x.Count
+                    }).ToList();
+                    break;
+
+                case "category":
+                    GroupRecords = "Category";
+                    var result4 = await query
+                    .GroupBy(x => x.EarnCategoryId)
+                    .Select(x => new
+                    {
+                        x.Key,
+                        Amount = x.Sum(j => j.Amount),
+                        Count = x.Count()
+                    })
+                    .ToListAsync();
+                    RecordGroupDate = result4.Select(x => new RecordGroupDate
+                    {
+                        Key = SelectCategories.First(j => j.Value == x.Key.ToString()).Text,
+                        Amount = x.Amount,
+                        Count = x.Count
+                    }).ToList();
+                    break;
+
+                case "concepts":
+                    GroupRecords = "Concepts";
+                    var result5 = await query
+                    .GroupBy(x => x.Concept)
+                    .Select(x => new
+                    {
+                        x.Key,
+                        Amount = x.Sum(j => j.Amount),
+                        Count = x.Count()
+                    })
+                    .ToListAsync();
+                    RecordGroupDate = result5.Select(x => new RecordGroupDate
+                    {
+                        Key = x.Key.ToString(),
+                        Amount = x.Amount,
+                        Count = x.Count
+                    }).ToList();
+                    break;
+
+                default:
+                    throw new InvalidOperationException();
             }
         }
 
@@ -169,39 +202,17 @@ namespace OliWorkshop.AccountingSys.Pages.Earns
             var amount_max = HttpContext.Request.Query["amount_max"];
             IQueryable<Earn> result = _context.Earn;
 
-            if (term != StringValues.Empty)
-            {
-                result = result.Where(x => x.Concept.Contains(term.ToString()));
-            }
 
-            if (category != StringValues.Empty 
-                && category != "none" 
+            if (category != StringValues.Empty
+                && category != "none"
                 && uint.TryParse(category.ToString(), out uint value))
             {
                 result = result.Where(x => x.EarnCategoryId == value);
             }
 
-            if (before != StringValues.Empty && DateTime.TryParse(before, out DateTime instanceBefore))
-            {
-                result = result.Where(x => x.AtCreated < instanceBefore);
-            }
+            var result2 = DataHelpers.FilterAssets(term, before, after, amount_min, amount_max, result);
 
-            if (before != StringValues.Empty && DateTime.TryParse(after, out DateTime instanceAfter))
-            {
-                result = result.Where(x => x.AtCreated > instanceAfter);
-            }
-
-            if (amount_min != StringValues.Empty && int.TryParse(amount_min.ToString(), out int instanceMin))
-            {
-                result = result.Where(x => x.Amount >= instanceMin);
-            }
-
-            if (amount_max != StringValues.Empty && int.TryParse(amount_max.ToString(), out int instanceMax))
-            {
-                result = result.Where(x => x.Amount <= instanceMax);
-            }
-
-            return result
+            return result2.Cast<Earn>()
                 .Where(x => x.UserId == HttpContext.User.GetUserId())
                 .OrderByDescending(x => x.AtCreated)
                 .Include(e => e.EarnCategory);
