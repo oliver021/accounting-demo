@@ -15,7 +15,7 @@ namespace OliWorkshop.AccountingSys.Data
 
         public string UserId { get; set; }
 
-        public IdentityUser User { get; set; }
+        public User User { get; set; }
 
         public uint EarnCategoryId { get; set; }
 

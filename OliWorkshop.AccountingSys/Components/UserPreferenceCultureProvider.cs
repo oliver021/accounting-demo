@@ -25,7 +25,7 @@ namespace OliWorkshop.AccountingSys.Components
             var SignIn = httpContext.RequestServices.GetService<SignInManager<User>>();
 
             // if not signed then return null and the next culture provider should to resolver
-            if (SignIn.IsSignedIn(httpContext.User))
+            if (!SignIn.IsSignedIn(httpContext.User))
             {
                 // return a culture provider
                 return null;
@@ -45,7 +45,7 @@ namespace OliWorkshop.AccountingSys.Components
             else
             {
                 // fallback resolve
-                var userManager = httpContext.RequestServices.GetService<AspNetUserManager<User>>();
+                var userManager = httpContext.RequestServices.GetService<UserManager<User>>();
                 var currentUser = await userManager.GetUserAsync(httpContext.User);
                 await userManager.AddClaimAsync(currentUser, new Claim(ClaimTypes.Locality, currentUser.Locale));
                 cultureResult = new ProviderCultureResult(Thread.CurrentThread.CurrentCulture.Name, currentUser.Locale);

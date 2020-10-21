@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OliWorkshop.AccountingSys", "OliWorkshop.AccountingSys\OliWorkshop.AccountingSys.csproj", "{B65CE602-CB93-4F6B-9F71-931A2A853E1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OliWorkshop.AccountingSys", "OliWorkshop.AccountingSys\OliWorkshop.AccountingSys.csproj", "{B65CE602-CB93-4F6B-9F71-931A2A853E1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

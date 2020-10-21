@@ -37,6 +37,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.SignIn.RequireConfirmedEmail = false;
 
             }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<SignInManager<User>>();
+            services.AddScoped<UserManager<User>>();
         }
 
         /// <summary>
