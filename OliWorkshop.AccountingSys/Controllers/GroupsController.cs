@@ -17,7 +17,7 @@ namespace OliWorkshop.AccountingSys.Controllers
     //[Authorize]
     public class GroupsController : ControllerBase
     {
-        private ApplicationDbContext Context;
+        private readonly ApplicationDbContext Context;
         private readonly GroupsService GroupService;
 
         public GroupsController(ApplicationDbContext context, GroupsService service)
@@ -87,9 +87,11 @@ namespace OliWorkshop.AccountingSys.Controllers
             }
 
             // create target record
-            var current = new CountableGroup();
-            current.Id = id;
-            current.Name = newName;
+            var current = new CountableGroup
+            {
+                Id = id,
+                Name = newName
+            };
 
             // mark as modified
             Context.Entry(current).State = EntityState.Modified;

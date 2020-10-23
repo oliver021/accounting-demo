@@ -1,5 +1,71 @@
 ﻿@page
 @model OliWorkshop.AccountingSys.Pages.Groups.IndexModel
-@{
 
-}
+<h1>Index</h1>
+<div class="row">
+    <div class="col-2">
+        <p>
+            <a class="btn btn-outline-info" asp-page="Create">Create New</a>
+        </p>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Incomes Categories
+            </th>
+            <th>
+                Expenses Categories
+            </th>
+            <th>
+                Incomes Moves
+            </th>
+            <th>
+                Incomes Moves
+            </th>
+            <th>
+                Sum Incomes
+            </th>
+            <th>
+                Sum  Incomes
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.GroupMetrics)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EarnCategories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpenseCategories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EarnTransactionTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpenseTransactionTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EarnTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpenseTotal)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit Name</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -44,7 +44,7 @@ namespace OliWorkshop.AccountingSys.Components
             }
             else
             {
-                throw new BadPaginationException(BadPaginationMessage);
+                throw new BadPaginationException(ConstantsValues.BadPaginationMessage);
             }
 
             if (userId != string.Empty)

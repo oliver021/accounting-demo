@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using OliWorkshop.AccountingSys.Components;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -83,6 +84,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 optionsBuilder.EnableDetailedErrors();
             });
+
+            // add extra services that to work with data
+            services.AddScoped<GroupsService>();
+            services.AddScoped<Logger>();
         }
     }
 }
