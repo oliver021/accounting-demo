@@ -70,10 +70,14 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
+/* application chnages*/
 body {
     background: rgb(240, 239, 241);
 }
 
+a > i {
+    margin-right: 12px !important;
+}
 .container {
     padding-left: 0 !important;
     margin-left: 10px !important;
@@ -122,6 +126,15 @@ li.menu-header  {
     height: 40px;
     font-weight: 600
 }
+
+li.menu-link {
+    margin-top: 11px !important;
+    margin-bottom: 11px !important
+}
+
+    li.menu-link:hover {
+        background: rgba(213, 213, 225, 0.5);
+    }
 
 .menu-link  > .nav-link{
     color: rgb(59, 61, 85) !important;
