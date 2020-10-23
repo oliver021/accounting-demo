@@ -13,11 +13,11 @@ namespace OliWorkshop.AccountingSys.Controllers
     [ApiController]
     public class EarnsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext Context;
 
         public EarnsController(ApplicationDbContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         [HttpGet]
@@ -26,12 +26,12 @@ namespace OliWorkshop.AccountingSys.Controllers
             if (page == 0)
             {
                 // return all elements
-                return await _context.Earn.ToListAsync();
+                return await Context.Earn.ToListAsync();
             }
             else if (page > 0 && length > 0)
             {
                 // return paginate list
-                return await _context.Earn.Skip(length * (page - 1)).Take(length).ToListAsync();
+                return await Context.Earn.Skip(length * (page - 1)).Take(length).ToListAsync();
             }
             else
             {
@@ -43,8 +43,15 @@ namespace OliWorkshop.AccountingSys.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Earn>> GetEarn(uint id)
         {
-            var earn = await _context.Earn.FindAsync(id);
+            // validate id value
+            if (id == default)
+            {
+                return BadRequest();
+            }
 
+            var earn = await Context.Earn.FindAsync(id);
+
+            // check if exists
             if (earn == null)
             {
                 return NotFound();
@@ -53,26 +60,32 @@ namespace OliWorkshop.AccountingSys.Controllers
             return earn;
         }
 
-        // PUT: api/Earns/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+      
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEarn(uint id, Earn earn)
         {
+            // validate id value
+            if (id == default)
+            {
+                return BadRequest();
+            }
+            
+            // check the result
             if (id != earn.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(earn).State = EntityState.Modified;
+            Context.Entry(earn).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EarnExists(id))
+                // check the problems
+                if (! await Context.Earn.AnyAsync(e => e.Id == id))
                 {
                     return NotFound();
                 }
@@ -85,37 +98,35 @@ namespace OliWorkshop.AccountingSys.Controllers
             return NoContent();
         }
 
-        // POST: api/Earns
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<Earn>> PostEarn(Earn earn)
         {
-            _context.Earn.Add(earn);
-            await _context.SaveChangesAsync();
+            Context.Earn.Add(earn);
+            await Context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEarn", new { id = earn.Id }, earn);
+            return Ok( new { id = earn.Id });
         }
 
-        // DELETE: api/Earns/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Earn>> DeleteEarn(uint id)
+        public async Task<ActionResult<NoContentResult>> DeleteEarn(uint id)
         {
-            var earn = await _context.Earn.FindAsync(id);
+            // validate id value
+            if (id == default)
+            {
+                return BadRequest();
+            }
+
+
+            var earn = await Context.Earn.FindAsync(id);
             if (earn == null)
             {
                 return NotFound();
             }
 
-            _context.Earn.Remove(earn);
-            await _context.SaveChangesAsync();
+            Context.Earn.Remove(earn);
+            await Context.SaveChangesAsync();
 
-            return earn;
-        }
-
-        private bool EarnExists(uint id)
-        {
-            return _context.Earn.Any(e => e.Id == id);
+            return NoContent();
         }
     }
 }

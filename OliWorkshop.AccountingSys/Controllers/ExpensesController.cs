@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OliWorkshop.AccountingSys.Data;
@@ -69,7 +68,7 @@ namespace OliWorkshop.AccountingSys.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ExpenseExists(id))
+                if (! await _context.Expense.AnyAsync(e => e.Id == id))
                 {
                     return NotFound();
                 }
@@ -84,16 +83,16 @@ namespace OliWorkshop.AccountingSys.Controllers
 
        
         [HttpPost]
-        public async Task<ActionResult<Expense>> PostExpense(Expense expense)
+        public async Task<ActionResult> PostExpense(Expense expense)
         {
             _context.Expense.Add(expense);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetExpense", new { id = expense.Id }, expense);
+            return Ok(new { id = expense.Id });
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Expense>> DeleteExpense(uint id)
+        public async Task<ActionResult> DeleteExpense(uint id)
         {
             var expense = await _context.Expense.FindAsync(id);
             if (expense == null)
@@ -104,12 +103,7 @@ namespace OliWorkshop.AccountingSys.Controllers
             _context.Expense.Remove(expense);
             await _context.SaveChangesAsync();
 
-            return expense;
-        }
-
-        private bool ExpenseExists(uint id)
-        {
-            return _context.Expense.Any(e => e.Id == id);
+            return NoContent();
         }
     }
 }

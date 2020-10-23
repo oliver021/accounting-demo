@@ -38,8 +38,10 @@ namespace OliWorkshop.AccountingSys.Data
 
             /// complex set of relations and some features like index
             builder.Entity<CountableGroup>(entity => {
-                entity.HasMany(x => x.CategoryEarnGroups);
-                entity.HasMany(x => x.CategoryExpenseGroups);
+                entity.HasMany(x => x.CategoryEarnGroups)
+                .WithOne(x => x.CountableGroup);
+                entity.HasMany(x => x.CategoryExpenseGroups)
+                .WithOne(x => x.CountableGroup);
                 entity.HasIndex(x => x.Name)
                 .IsUnique();
             });

@@ -13,25 +13,24 @@ namespace OliWorkshop.AccountingSys.Controllers
     [ApiController]
     public class EarnCategoriesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext Context;
 
         public EarnCategoriesController(ApplicationDbContext context)
         {
-            _context = context;
+            Context = context;
         }
 
-        // GET: api/EarnCategories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EarnCategory>>> GetEarnCategory(int page = 0, int length = 45)
         {
             if (page == 0)
             {
                 // return all elements
-                return await _context.EarnCategory.ToListAsync();
+                return await Context.EarnCategory.ToListAsync();
             }else if (page > 0 && length > 0)
             {
                 // return paginate list
-                return await _context.EarnCategory.Skip(length*(page-1)).Take(length).ToListAsync();
+                return await Context.EarnCategory.Skip(length*(page-1)).Take(length).ToListAsync();
             }
             else
             {
@@ -40,11 +39,16 @@ namespace OliWorkshop.AccountingSys.Controllers
             }
         }
 
-        // GET: api/EarnCategories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EarnCategory>> GetEarnCategory(uint id)
         {
-            var earnCategory = await _context.EarnCategory.FindAsync(id);
+            // validate id value
+            if (id == default)
+            {
+                return BadRequest();
+            }
+
+            var earnCategory = await Context.EarnCategory.FindAsync(id);
 
             if (earnCategory == null)
             {
@@ -54,26 +58,30 @@ namespace OliWorkshop.AccountingSys.Controllers
             return earnCategory;
         }
 
-        // PUT: api/EarnCategories/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+       
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEarnCategory(uint id, EarnCategory earnCategory)
         {
+            // validate id value
+            if (id == default)
+            {
+                return BadRequest();
+            }
+
             if (id != earnCategory.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(earnCategory).State = EntityState.Modified;
+            Context.Entry(earnCategory).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EarnCategoryExists(id))
+                if (! await Context.EarnCategory.AnyAsync(e => e.Id == id))
                 {
                     return NotFound();
                 }
@@ -86,37 +94,40 @@ namespace OliWorkshop.AccountingSys.Controllers
             return NoContent();
         }
 
-        // POST: api/EarnCategories
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<EarnCategory>> PostEarnCategory(EarnCategory earnCategory)
+        public async Task<ActionResult> PostEarnCategory(EarnCategory earnCategory)
         {
-            _context.EarnCategory.Add(earnCategory);
-            await _context.SaveChangesAsync();
+            // the name category should be unique
+            if (await Context.EarnCategory.AnyAsync(x => x.Name == earnCategory.Name))
+            {
+                return BadRequest("The name category should be unique.");
+            }
 
-            return CreatedAtAction("GetEarnCategory", new { id = earnCategory.Id }, earnCategory);
+            Context.EarnCategory.Add(earnCategory);
+            await Context.SaveChangesAsync();
+
+            return Ok( new { id = earnCategory.Id });
         }
 
-        // DELETE: api/EarnCategories/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<EarnCategory>> DeleteEarnCategory(uint id)
+        public async Task<ActionResult> DeleteEarnCategory(uint id)
         {
-            var earnCategory = await _context.EarnCategory.FindAsync(id);
+            // validate id value
+            if (id == default)
+            {
+                return BadRequest();
+            }
+
+            var earnCategory = await Context.EarnCategory.FindAsync(id);
             if (earnCategory == null)
             {
                 return NotFound();
             }
 
-            _context.EarnCategory.Remove(earnCategory);
-            await _context.SaveChangesAsync();
+            Context.EarnCategory.Remove(earnCategory);
+            await Context.SaveChangesAsync();
 
-            return earnCategory;
-        }
-
-        private bool EarnCategoryExists(uint id)
-        {
-            return _context.EarnCategory.Any(e => e.Id == id);
+            return NoContent();
         }
     }
 }

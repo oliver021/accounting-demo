@@ -11,6 +11,8 @@ using OliWorkshop.AccountingSys.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace OliWorkshop.AccountingSys
 {
@@ -29,6 +31,11 @@ namespace OliWorkshop.AccountingSys
             services.AddDatabaseService(Configuration);
             services.AddIdentitySystem();
             services.AddRazorPages();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.Formatting = Formatting.Indented;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +68,7 @@ namespace OliWorkshop.AccountingSys
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
